@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lightera Optical Flow Lab</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup" aria-label="Lightera Optical Flow Lab">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-copy">
+            <span>Creating</span>
+            <span>Brighter</span>
+            <span>Connections</span>
+          </span>
+          <strong>Lightera</strong>
+        </div>
+        <section class="score-strip" aria-label="Indicadores principais">
+          <div>
+            <span>Capital</span>
+            <strong id="money">$1200</strong>
+          </div>
+          <div>
+            <span>Bobinas entregues</span>
+            <strong id="delivered">0</strong>
+          </div>
+          <div>
+            <span>Fluxo</span>
+            <strong id="flowScore">0%</strong>
+          </div>
+          <div>
+            <span>Rodada</span>
+            <strong id="round">1/5</strong>
+          </div>
+        </section>
+      </header>
+
+      <section class="control-band">
+        <div class="round-clock">
+          <span id="statusDot" class="status-dot"></span>
+          <div>
+            <span id="phaseLabel">Preparar linha optica</span>
+            <strong id="clock">01:00</strong>
+          </div>
+        </div>
+        <div class="actions" aria-label="Acoes da simulacao">
+          <button id="startBtn" class="control-btn go tip" data-tip="GO: inicia a rodada. Enquanto roda, as decisoes ficam bloqueadas para voce observar o fluxo.">Iniciar</button>
+          <button id="pauseBtn" class="control-btn stop tip" data-tip="STOP: pausa a simulacao e permite analisar gargalos antes da proxima rodada.">Pausar</button>
+          <button id="resetBtn" class="control-btn neutral tip" data-tip="Reinicia capital, pedidos, layout e todas as decisoes.">Reiniciar</button>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="panel left-panel">
+          <h1>Optical Flow Lab</h1>
+          <p>
+            Produza cabos opticos em bobinas. Primeiro conecte etapas para reduzir espera por lote.
+            Depois aumente a demanda com Marketing.
+          </p>
+
+          <section class="tutorial-card">
+            <div class="tutorial-heading">
+              <span>Tutorial rapido</span>
+              <strong>Como jogar</strong>
+            </div>
+            <ol>
+              <li>Objetivo: reduzir Muda sem perder entrega, mantendo capital positivo.</li>
+              <li>Use <b>Compactar conexao</b> nas primeiras rodadas para transformar transporte por lote em fluxo unitario.</li>
+              <li>Use <b>Engenheira Lean</b> se a etapa de Trefilacao acumular WIP.</li>
+              <li>So use <b>Marketing</b> quando a linha ja estiver mais conectada.</li>
+              <li>Desative o AGV apenas quando quase toda a rota estiver em fluxo unitario.</li>
+            </ol>
+          </section>
+
+          <div class="decision-card">
+            <span>Decisoes restantes na rodada</span>
+            <strong id="changes">2</strong>
+          </div>
+
+          <div class="tool-grid">
+            <button id="compactBtn" class="tool-btn connect tip" data-tip="Custa $45. Conecta a proxima etapa e remove espera por lote naquele trecho.">Compactar conexao <small>$45</small></button>
+            <button id="analystBtn" class="tool-btn engineer tip" data-tip="Custa $110. Reduz setup da Trefilacao e diminui defeitos do processo.">Engenheira Lean <small>$110</small></button>
+            <button id="marketerBtn" class="tool-btn market tip" data-tip="Custa $130. Aumenta pedidos e receita potencial, mas pode estourar o lead time.">Ativar Marketing <small>$130</small></button>
+            <button id="sellTruckBtn" class="tool-btn danger tip" data-tip="Recebe $160 e remove o AGV. Perigoso se ainda existirem trechos sem fluxo unitario.">Desativar AGV <small>+$160</small></button>
+          </div>
+
+          <div class="selected-card">
+            <span>Etapa em foco</span>
+            <strong id="selectedName">Demanda</strong>
+            <p id="selectedText">Entrada dos pedidos de bobinas opticas.</p>
+          </div>
+
+          <div class="event-log" aria-live="polite">
+            <h2>Eventos</h2>
+            <ol id="log"></ol>
+          </div>
+        </aside>
+
+        <section class="factory-wrap" aria-label="Linha de producao optica">
+          <div class="factory-header">
+            <div>
+              <span>Linha optica</span>
+              <strong id="layoutMode">Layout disperso</strong>
+            </div>
+            <div>
+              <span>Transferencia</span>
+              <strong id="batchSize">5 bobinas</strong>
+            </div>
+            <div>
+              <span>AGV</span>
+              <strong id="truckState">Disponivel</strong>
+            </div>
+          </div>
+          <div class="flow-help">
+            <span>Entrada</span>
+            <span>Processo</span>
+            <span>Saida</span>
+            <p>Cartoes mostram fila de entrada, item em processamento e fila de saida. Trechos roxos ja estao em fluxo unitario; trechos tracejados dependem do AGV.</p>
+          </div>
+          <div class="swimlane-scroll" aria-label="Fluxo de producao">
+            <div id="factory" class="factory-lane"></div>
+          </div>
+        </section>
+
+        <aside class="panel metrics-panel">
+          <h2>Operacao</h2>
+          <div class="metric-list">
+            <label>
+              <span>Pedidos ativos</span>
+              <meter id="ordersMeter" min="0" max="18" value="0"></meter>
+              <strong id="ordersText">0</strong>
+            </label>
+            <label>
+              <span>WIP total</span>
+              <meter id="wipMeter" min="0" max="40" value="0"></meter>
+              <strong id="wipText">0</strong>
+            </label>
+            <label>
+              <span>Lead time medio</span>
+              <meter id="leadMeter" min="0" max="65" value="0"></meter>
+              <strong id="leadText">0s</strong>
+            </label>
+            <label>
+              <span>Defeitos</span>
+              <meter id="scrapMeter" min="0" max="12" value="0"></meter>
+              <strong id="scrapText">0</strong>
+            </label>
+          </div>
+
+          <div class="insight-box">
+            <span>Proxima melhor acao</span>
+            <p id="diagnostic">Compacte Demanda e Trefilacao para remover espera por lote no primeiro gargalo.</p>
+          </div>
+
+          <section class="waste-panel" aria-label="Sete desperdicios">
+            <div class="waste-heading">
+              <span>Muda</span>
+              <strong>Sete Desperdicios</strong>
+            </div>
+            <div id="wasteList" class="waste-list"></div>
+          </section>
+
+          <div class="legend">
+            <span><i class="legend-dot waiting"></i>Buffer</span>
+            <span><i class="legend-dot working"></i>Cabo em processo</span>
+            <span><i class="legend-dot connected"></i>Fluxo unitario</span>
+            <span><i class="legend-dot agv"></i>AGV por lote</span>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
