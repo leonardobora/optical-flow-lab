@@ -1,3 +1,23 @@
+<p align="center">
+  <img src="banner.png" alt="Lightera Optical Flow Lab" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://github.com/leonardobora/lean-bike-game/stargazers"><img src="https://img.shields.io/github/stars/leonardobora/lean-bike-game?style=flat&logo=github&color=f4c542" alt="GitHub Repo stars"></a>
+  <a href="https://github.com/leonardobora/lean-bike-game/blob/master/LICENSE"><img src="https://img.shields.io/github/license/leonardobora/lean-bike-game" alt="License"></a>
+  <a href="https://github.com/leonardobora/lean-bike-game/issues"><img src="https://img.shields.io/github/issues/leonardobora/lean-bike-game" alt="Issues"></a>
+  <a href="https://github.com/leonardobora/lean-bike-game/pulls"><img src="https://img.shields.io/github/issues-pr/leonardobora/lean-bike-game" alt="Pull Requests"></a>
+  <a href="https://github.com/leonardobora/lean-bike-game/commits"><img src="https://img.shields.io/github/last-commit/leonardobora/lean-bike-game" alt="Last Commit"></a>
+  <a href="https://github.com/leonardobora/lean-bike-game"><img src="https://img.shields.io/github/languages/top/leonardobora/lean-bike-game" alt="Top Language"></a>
+</p>
+
+<p align="center">
+  <b>Lean Manufacturing Simulation Game for Optical Cable Production</b><br>
+  <sub>Maximize capital and deliveries across 5 rounds of strategic decision-making.</sub>
+</p>
+
+---
+
 # Lightera Optical Flow Lab
 
 Prototipo local e autocontido de um jogo Lean inspirado na linguagem visual da Lightera e adaptado para um fluxo simplificado de producao de cabos opticos.
